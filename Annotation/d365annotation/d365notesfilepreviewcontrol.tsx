@@ -1,18 +1,17 @@
 import * as React from 'react';
-import {
-    getTheme, loadTheme, mergeStyleSets, FontWeights,
-    DefaultButton, PrimaryButton, IconButton, IIconProps, IButtonStyles,
-    CommandBar, ICommandBarItemProps,
-    DetailsList, DetailsListLayoutMode, IColumn, IDetailsListStyles, Selection,
-    ILabelStyles, Label,
-    MarqueeSelection,
-    Modal,
-    Panel,
-    Spinner, SpinnerSize,
-    Stack, IStackProps,
-    Text,
-    TextField
-} from '@fluentui/react';
+import { getTheme, loadTheme, mergeStyleSets, FontWeights } from '@fluentui/react/lib/Styling';
+import { DefaultButton, PrimaryButton, IconButton, IButtonStyles } from '@fluentui/react/lib/Button';
+import { IIconProps } from '@fluentui/react/lib/Icon';
+import { CommandBar, ICommandBarItemProps } from '@fluentui/react/lib/CommandBar';
+import { DetailsList, DetailsListLayoutMode, IColumn, IDetailsListStyles, Selection } from '@fluentui/react/lib/DetailsList';
+import { ILabelStyles, Label } from '@fluentui/react/lib/Label';
+import { MarqueeSelection } from '@fluentui/react/lib/MarqueeSelection';
+import { Modal } from '@fluentui/react/lib/Modal';
+import { Panel } from '@fluentui/react/lib/Panel';
+import { Spinner, SpinnerSize } from '@fluentui/react/lib/Spinner';
+import { Stack, IStackProps } from '@fluentui/react/lib/Stack';
+import { Text } from '@fluentui/react/lib/Text';
+import { TextField } from '@fluentui/react/lib/TextField';
 import * as sanitize from 'sanitize-html';
 import { IInputs } from './generated/ManifestTypes';
 import ThemeProvider from './ThemeProvider';
@@ -113,7 +112,10 @@ export class d365notesfilepreviewControl extends React.Component<Id365notesfilep
             previewedItem: null
         };
 
-        this._loadData();
+        let recordId = (this.props.context as any).page.entityId;
+        if (recordId) {
+            this._loadData();
+        }
     }
 
     public render() {
@@ -239,6 +241,24 @@ export class d365notesfilepreviewControl extends React.Component<Id365notesfilep
 
         const cancelIcon: IIconProps = { iconName: 'Cancel' };
 
+        const isMobile: boolean = window.innerWidth < 768 || window.innerHeight < 768;
+        const recordId = (this.props.context as any).page.entityId;
+
+
+        if (isMobile || !recordId) {
+            return (
+                <div
+                    style={{
+                        width: 0,
+                        height: 0,
+                        overflow: 'hidden',
+                        display: 'none'
+                    }}
+                >
+                </div>
+            )
+        }
+
         return (
             <div>
                 <div>
@@ -331,38 +351,38 @@ export class d365notesfilepreviewControl extends React.Component<Id365notesfilep
 
     private _getColumns = (): IColumn[] => {
         return [
-            {
-                key: 'column1',
-                name: this._props.context.resources.getString('title'),
-                fieldName: 'title',
-                minWidth: 350,
-                maxWidth: 500,
-                isResizable: true,
-                isSorted: true,
-                isSortedDescending: false,
-                sortAscendingAriaLabel: this._props.context.resources.getString('sortedAZ'),
-                sortDescendingAriaLabel: this._props.context.resources.getString('sortedZA'),
-                onColumnClick: this._onColumnClick,
-                data: 'string',
-                onRender: (item: INote) => {
-                    return <a onClick={e => this._openPanelEditMode(item)}>{item.title}</a>;
-                },
-                isPadded: true,
-            },
-            {
-                key: 'column2',
-                name: this._props.context.resources.getString('description'),
-                fieldName: 'description',
-                minWidth: 350,
-                maxWidth: 600,
-                isResizable: true,
-                isCollapsible: true,
-                data: 'string',
-                onColumnClick: this._onColumnClick,
-                onRender: (item: INote) => {
-                    return <span>{this._removeFormatting(item.description)}</span>;
-                },
-            },
+            // {
+            //     key: 'column1',
+            //     name: this._props.context.resources.getString('title'),
+            //     fieldName: 'title',
+            //     minWidth: 350,
+            //     maxWidth: 500,
+            //     isResizable: true,
+            //     isSorted: true,
+            //     isSortedDescending: false,
+            //     sortAscendingAriaLabel: this._props.context.resources.getString('sortedAZ'),
+            //     sortDescendingAriaLabel: this._props.context.resources.getString('sortedZA'),
+            //     onColumnClick: this._onColumnClick,
+            //     data: 'string',
+            //     onRender: (item: INote) => {
+            //         return <a onClick={e => this._openPanelEditMode(item)}>{item.title}</a>;
+            //     },
+            //     isPadded: true,
+            // },
+            // {
+            //     key: 'column2',
+            //     name: this._props.context.resources.getString('description'),
+            //     fieldName: 'description',
+            //     minWidth: 350,
+            //     maxWidth: 600,
+            //     isResizable: true,
+            //     isCollapsible: true,
+            //     data: 'string',
+            //     onColumnClick: this._onColumnClick,
+            //     onRender: (item: INote) => {
+            //         return <span>{this._removeFormatting(item.description)}</span>;
+            //     },
+            // },
             {
                 key: 'column3',
                 name: this._props.context.resources.getString('fileName'),
@@ -381,23 +401,23 @@ export class d365notesfilepreviewControl extends React.Component<Id365notesfilep
                 },
                 isPadded: true,
             },
-            {
-                key: 'column4',
-                name: this._props.context.resources.getString('createdOn'),
-                fieldName: 'dateCreated',
-                minWidth: 200,
-                isResizable: true,
-                isSorted: true,
-                isSortedDescending: true,
-                sortAscendingAriaLabel: this._props.context.resources.getString('sortedDateAcs'),
-                sortDescendingAriaLabel: this._props.context.resources.getString('sortedDateDesc'),
-                onColumnClick: this._onColumnClick,
-                data: 'number',
-                onRender: (item: INote) => {
-                    return <span>{this.props.context.formatting.formatDateShort(item.dateCreated, true)}</span>;
-                },
-                isPadded: true,
-            },
+            // {
+            //     key: 'column4',
+            //     name: this._props.context.resources.getString('createdOn'),
+            //     fieldName: 'dateCreated',
+            //     minWidth: 200,
+            //     isResizable: true,
+            //     isSorted: true,
+            //     isSortedDescending: true,
+            //     sortAscendingAriaLabel: this._props.context.resources.getString('sortedDateAcs'),
+            //     sortDescendingAriaLabel: this._props.context.resources.getString('sortedDateDesc'),
+            //     onColumnClick: this._onColumnClick,
+            //     data: 'number',
+            //     onRender: (item: INote) => {
+            //         return <span>{this.props.context.formatting.formatDateShort(item.dateCreated, true)}</span>;
+            //     },
+            //     isPadded: true,
+            // },
             //{
             //    key: 'column5',
             //    name: this._props.context.resources.getString('owner'),
@@ -533,12 +553,14 @@ export class d365notesfilepreviewControl extends React.Component<Id365notesfilep
             newNote.isdocument = true;
             newNote.documentbody = this.state.noteFile.fileContent;
             newNote.mimetype = this.state.noteFile.mimeType;
-        }
+        } 
 
         let entityId = this._props.entityId;
         let entityName = this._props.entityName;
 
         newNote['objectid_' + entityName + '@odata.bind'] = '/' + entityName + 's(' + entityId + ')';
+
+        console.log(newNote);
 
         this._props.context.webAPI.createRecord('annotation', newNote).then(
             (result) => {
@@ -720,6 +742,8 @@ export class d365notesfilepreviewControl extends React.Component<Id365notesfilep
                 objecttypecode: this._props.entityName,
                 ['objectid_' + this._props.entityName + '@odata.bind']: this._props.entityName + 's(' + this._props.entityId + ')'
             };
+
+            console.log(note);
 
             this._props.context.webAPI.createRecord('annotation', note)
                 .then(result => {

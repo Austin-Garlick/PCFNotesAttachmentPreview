@@ -1,9 +1,9 @@
-import React = require("react");
-import ReactDOM = require('react-dom');
+import { createElement } from 'react';
+import { render } from 'react-dom';
 import { IInputs, IOutputs } from "./generated/ManifestTypes";
-import { d365notesfilepreviewControl, Id365notesfilepreviewControlProps } from './d365notesfilepreviewControl';
+import { d365notesfilepreviewControl, Id365notesfilepreviewControlProps } from './d365notesfilepreviewcontrol';
 
-export class d365notesfilepreview implements ComponentFramework.StandardControl<IInputs, IOutputs> {
+export class d365notesfilepreviewV3 implements ComponentFramework.StandardControl<IInputs, IOutputs> {
 
     private _context: ComponentFramework.Context<IInputs>;
     private _container: HTMLDivElement;
@@ -41,13 +41,13 @@ export class d365notesfilepreview implements ComponentFramework.StandardControl<
          this._context = context;
  
          if (this._themeMainColor) {
-             ReactDOM.render(React.createElement(d365notesfilepreviewControl, this.getControlProps()), this._container);
+             render(createElement(d365notesfilepreviewControl, this.getControlProps()), this._container);
          }
          else {
              this.getMainThemeColor().then(color => {
                  this._themeMainColor = color;
  
-                 ReactDOM.render(React.createElement(d365notesfilepreviewControl, this.getControlProps()), this._container);
+                 render(createElement(d365notesfilepreviewControl, this.getControlProps()), this._container);
              });
          }
      }

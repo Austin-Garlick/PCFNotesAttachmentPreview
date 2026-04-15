@@ -8,7 +8,7 @@
   <Import Project="$(PowerAppsTargetsPath)\Microsoft.PowerApps.VisualStudio.Solution.props" Condition="Exists('$(PowerAppsTargetsPath)\Microsoft.PowerApps.VisualStudio.Solution.props')" />
 
   <PropertyGroup>
-    <ProjectGuid>b2f6a385-9474-451d-b9a7-a8d5395c1182</ProjectGuid>
+    <ProjectGuid>3fa3872e-f97c-492f-8a02-aea638139f37</ProjectGuid>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <!--Remove TargetFramework when this is available in 16.1-->
     <TargetFramework>net462</TargetFramework>
@@ -16,9 +16,14 @@
     <SolutionRootPath>src</SolutionRootPath>
   </PropertyGroup>
 
-  <!-- Solution Packager overrides, un-comment to use: SolutionPackagerType (Managed, Unmanaged, Both)
+  <!-- 
+    Solution Packager overrides, un-comment to use: SolutionPackagerType (Managed, Unmanaged, Both)
+    Solution Localization Control, if you want to enabled localization of your solution, un-comment SolutionPackageEnableLocalization and set the value to true. - Requires use of -loc flag on Solution Clone or Sync
+  -->
+  <!--
   <PropertyGroup>
     <SolutionPackageType>Managed</SolutionPackageType>
+    <SolutionPackageEnableLocalization>false</SolutionPackageEnableLocalization>
   </PropertyGroup>
   -->
 
